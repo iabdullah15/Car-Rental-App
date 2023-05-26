@@ -1,0 +1,49 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block title %}
+
+<title>Sports cars</title>
+
+{% endblock %} {% block content %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/cars.css' %}">
+{% endblock %}
+
+<div class="container-fluid">
+    <h2 class="text-center"><em> Sports Cars </em></h2>
+  {% if sports %}
+
+  <div class="row justify-content-center">
+    {% for car in sports %}
+
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pt-5 car-col d-flex justify-content-center">
+      <div class="card car-card" style="width: 18rem">
+        <img src="img/Toyota Corolla.jpg" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{ car.car_name }}</h5>
+          <p class="card-text price-text" style="text-align: right">
+            <strong> ${{ car.price }}</strong>
+          </p>
+          <p class="card-text mb-1" style="text-align: right; font-size: 12px">
+            per day
+          </p>
+          <div class="card-book-btn">
+            <a href="#" class="btn btn-outline-dark">Book now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+
+  <h2 class="text-center"><em> No cars to show </em></h2>
+
+  {% endif %}
+</div>
+
+{% endblock %}

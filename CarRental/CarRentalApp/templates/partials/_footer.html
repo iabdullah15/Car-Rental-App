@@ -1,3 +1,5 @@
+{% load static %}
+
 <footer id="footer">
     <div class="container">
       <div class="row">
@@ -10,7 +12,7 @@
             exercitationem, hic architecto consequuntur obcaecati!
           </p>
 
-          <a style="color: white" class="navbar-brand fa-xl" href="#">
+          <a style="color: white" class="navbar-brand fa-xl" href="{% url 'home' %}">
             <i class="fa-solid fa-car-side"></i>
             Rent a car</a
           >
@@ -18,21 +20,21 @@
         <div class="col-lg-4">
           <h3 class="text-center">Important links</h3>
           <ul class="text-center">
-            <li><a href="#" class="footer-link">Home</a></li>
+            <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
             <li>
-              <a href="#" class="footer-link">All Cars</a>
+              <a href="{% url 'cars' %}" class="footer-link">All Cars</a>
             </li>
             <li>
-              <a href="#" class="footer-link">Sports Cars</a>
+              <a href="{% url 'sports_cars' %}" class="footer-link">Sports Cars</a>
             </li>
             <li>
-              <a href="#" class="footer-link">Luxury Cars</a>
+              <a href="{% url 'luxury_cars' %}" class="footer-link">Luxury Cars</a>
             </li>
             <li>
-              <a href="#" class="footer-link">Economy Cars</a>
+              <a href="{% url 'economy_cars' %}" class="footer-link">Economy Cars</a>
             </li>
             <li>
-              <a href="#" class="footer-link">SUV Cars</a>
+              <a href="{% url 'suv_cars' %}" class="footer-link">SUV Cars</a>
             </li>
           </ul>
         </div>
@@ -40,10 +42,10 @@
           <h3 class="text-center pb-3">Follow our socials!</h3>
           <div class="img-div text-center">
             <a href="">
-              <img width="40px" height="auto" src="img/instagram.png" alt=""
+              <img width="40px" height="auto" src="{% static 'img/instagram.png' %}" alt=""
             /></a>
             <a href="">
-              <img width="67px" height="auto" src="img/facebook.png" alt="" />
+              <img width="67px" height="auto" src="{% static 'img/facebook.png' %}" alt="" />
             </a>
           </div>
         </div>
