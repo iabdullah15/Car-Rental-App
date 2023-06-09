@@ -1,4 +1,75 @@
 {% extends 'base.html' %} 
+{% load static %}
+
+
+{% block title %}
+  <title>Home</title>
+{% endblock %}
+
+
+{% block styles %}
+
+{{ block.super }}
+
+<style>
+  .main-header {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-color: #6c757d;
+  }
+
+  .carousel-img {
+    width: 600px;
+    height: auto;
+  }
+
+  .carousel-item {
+    text-align: center;
+  }
+
+  .book-btn {
+    text-align: center;
+  }
+</style>
+
+{% endblock %}
+
+{% block carousel %}
+<div
+id="carouselExampleSlidesOnly"
+class="carousel slide carousel-fade"
+data-bs-ride="carousel">
+
+    <div class="carousel-inner">
+      <h1 class="display-1" style="text-align: center">
+        Best car rental in the U.S
+      </h1>
+
+      <div class="carousel-item active" data-bs-interval="2000">
+        <img
+          src="{% static 'img/toyota.png' %}"
+          class="object-fit-fill carousel-img ms-auto"
+          alt="..." />
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img
+          src="{% static 'img/bentley.png' %}"
+          class="object-fit-fill carousel-img"
+          alt="..." />
+      </div>
+    </div>
+
+</div>
+
+<div class="book-btn">
+<a href="#" class="btn btn-lg btn-outline-dark">Book Now!</a>
+</div>
+</section>
+
+<h1 class="text-center">Logged in as {{ request.user }}</h1>
+
+{% endblock %}
+
 
 {% block content %}
 
@@ -15,24 +86,13 @@
 
 <div class="main-section-1">
   <div class="container text-center">
-    <form class="row g-3">
-      <div class="col-md-4">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Any brand</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
+    <form class="row" action="{% url 'car_search' %}" method="GET">
+      {% csrf_token %}
+
+      <div class="col-md-6">
+        <input type="search" name="search" id="search-bar" class="form-control" placeholder="Search for a car">
       </div>
-      <div class="col-md-4">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Any type</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <button type="submit" class="btn btn-outline-dark btn-lg">
           Search
         </button>
@@ -44,24 +104,26 @@
 <section class="sports-cars">
   <h2 class="text-center"><em> Sports Cars </em></h2>
   <p class="text-center">
-    We offer Car Rental Services for all kind of Sports Cars at affordable prices
-    in the U.S.
+    We offer Car Rental Services for all kind of Sports Cars at affordable
+    prices in the U.S.
   </p>
 
   <div class="container-fluid">
     <div class="row justify-content-center">
-
-
-      {% if sports %}
-
+      {% if sports %} 
+      
       {% for car in sports %}
 
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-6 car-col d-flex justify-content-center">
         <div class="card car-card" style="width: 18rem">
-          <img src="img/Audi R8.jpg" class="card-img-top" alt="..." />
+          {% if car.car_image %}
+          <img src=" {{ car.car_image.url }} " class="card-img-top" />
+          {% else %} 
+            <img src="" alt="car_image"> 
+          {% endif %}
           <div class="card-body">
-            <h5 class="card-title"> {{ car.car_name }}  </h5>
+            <h5 class="card-title">{{ car.car_name }}</h5>
             <p class="card-text price-text" style="text-align: right">
               <strong> ${{ car.price }}</strong>
             </p>
@@ -80,43 +142,41 @@
       {% endfor %}
     </div>
 
-
     <div class="pt-5 view-more-btn text-center">
       <a class="view-more" href="{% url 'sports_cars' %}">View More</a>
     </div>
-
 
     {% else %}
 
     <h2 class="text-center"><em> No Cars to show </em></h2>
 
     {% endif %}
-
   </div>
 </section>
 
 <section class="luxury-cars">
   <h2 class="text-center"><em> Luxury Cars </em></h2>
   <p class="text-center">
-    We offer Car Rental Services for all kind of Luxury Cars at affordable prices
-    in the U.S.
+    We offer Car Rental Services for all kind of Luxury Cars at affordable
+    prices in the U.S.
   </p>
 
   <div class="container-fluid">
     <div class="row justify-content-center">
-
-
-      {% if luxury %}
-
+      {% if luxury %} 
+      
       {% for car in luxury %}
-
 
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-6 car-col d-flex justify-content-center">
         <div class="card car-card" style="width: 18rem">
-          <img src="img/Audi A8.jpg" class="card-img-top" alt="..." />
+          {% if car.car_image %}
+          <img src=" {{ car.car_image.url }} " class="card-img-top" />
+          {% else %} 
+            <img src="" alt="car_image"> 
+          {% endif %}
           <div class="card-body">
-            <h5 class="card-title"> {{ car.car_name }} </h5>
+            <h5 class="card-title">{{ car.car_name }}</h5>
             <p class="card-text price-text" style="text-align: right">
               <strong> ${{ car.price }}</strong>
             </p>
@@ -133,45 +193,43 @@
       </div>
 
       {% endfor %}
-
     </div>
     <div class="pt-5 view-more-btn text-center">
       <a class="view-more" href="{% url 'luxury_cars' %}">View More</a>
     </div>
   </div>
 
-
   {% else %}
 
   <h2 class="text-center"><em> No cars to show </em></h2>
 
   {% endif %}
-
-
 </section>
 
 <section class="economy-cars">
   <h2 class="text-center"><em> Economy Cars </em></h2>
   <p class="text-center">
-    We offer Car Rental Services for all kind of Economy Cars at affordable prices
-    in the U.S.
+    We offer Car Rental Services for all kind of Economy Cars at affordable
+    prices in the U.S.
   </p>
 
   <div class="container-fluid">
     <div class="row justify-content-center">
-
-
-      {% if economy %}
-
+      {% if economy %} 
+      
       {% for car in economy %}
-
 
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-6 car-col d-flex justify-content-center">
         <div class="card car-card" style="width: 18rem">
-          <img src="img/Toyota Corolla.jpg" class="card-img-top" alt="..." />
+          {% if car.car_image %}
+            <img src=" {{ car.car_image.url }} " class="card-img-top" />
+          {% else %} 
+            <img src="" alt="car_image"> 
+          {% endif %}
+          
           <div class="card-body">
-            <h5 class="card-title"> {{ car.car_name }} </h5>
+            <h5 class="card-title">{{ car.car_name }}</h5>
             <p class="card-text price-text" style="text-align: right">
               <strong> ${{ car.price }}</strong>
             </p>
@@ -187,25 +245,18 @@
         </div>
       </div>
 
-
       {% endfor %}
-
-
-
     </div>
     <div class="pt-5 view-more-btn text-center">
       <a class="view-more" href="{% url 'economy_cars' %}">View More</a>
     </div>
   </div>
 
-
   {% else %}
 
   <h2 class="text-center"><em> No cars to show </em></h2>
 
   {% endif %}
-
-
 </section>
 
 <section class="suv-cars">
@@ -217,17 +268,18 @@
 
   <div class="container-fluid">
     <div class="row justify-content-center">
+      {% if suv %} {% for car in suv %}
 
-      {% if suv %}
-
-      {% for car in suv %}
-      
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-6 car-col d-flex justify-content-center">
         <div class="card car-card" style="width: 18rem">
-          <img src="img/Hyundai Santa Fe.jpg" class="card-img-top" alt="..." />
+          {% if car.car_image %}
+          <img src=" {{ car.car_image.url }} " class="card-img-top" />
+          {% else %} 
+            <img src="" alt="car_image"> 
+          {% endif %}
           <div class="card-body">
-            <h5 class="card-title"> {{ car.car_name }} </h5>
+            <h5 class="card-title">{{ car.car_name }}</h5>
             <p class="card-text price-text" style="text-align: right">
               <strong> ${{ car.price }}</strong>
             </p>
@@ -243,23 +295,17 @@
         </div>
       </div>
 
-
       {% endfor %}
-
     </div>
     <div class="pt-5 view-more-btn text-center">
       <a class="view-more" href="{% url 'suv_cars' %}">View More</a>
     </div>
 
-
     {% else %}
 
     <h2 class="text-center"><em> No cars to show </em></h2>
 
-
     {% endif %}
-
-
   </div>
 </section>
 

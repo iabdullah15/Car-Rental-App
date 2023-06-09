@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    <title>Register</title>
+
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+
+    <style>
+        p.text-center > a {
+            color: black;
+        }
+
+        a {
+            color: black;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+<p class="text-center"><a href="{% url 'home' %}">You are not allowed to access this page.</a></p>
+
+{% else %}
+
+<div class="center">
+	<form method="post" novalidate class="card">
+	 	{%csrf_token %}
+	 	
+	 	<h2>Register</h2>
+		{% for field in form %}
+			{% if field.name == 'completed' %}
+				<p>
+					{{ field.label_tag }}
+					{{ field }}
+				</p>
+				{% if field.errors %}
+	        		<p class="error">{{ field.errors|striptags  }}</p> 
+	        	{% endif %}
+			{% else %}
+	    		{{ field.label_tag }} 
+	        	{{ field }}
+	        	{% if field.errors %}
+	        		<p class="error">{{ field.errors|striptags  }}</p> 
+	        	{% endif %}
+	        {% endif %}
+		{% endfor %}
+		
+		<div class="form-buttons">
+			<input type="submit" value="Save" class="btn btn-primary"/>
+			<a href="{% url 'home' %}" class="btn btn-outline">Cancel</a>
+		</div>
+	</form>
+</div>
+
+{% endif %}
+
+{% endblock %}

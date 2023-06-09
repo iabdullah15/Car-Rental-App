@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Searched for ...</title>
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="main-section-1">
+    <div class="container text-center">
+      <form class="row" action="{% url 'car_search' %}" method="GET">
+        {% csrf_token %}
+  
+        <div class="col-md-6">
+          <input type="search" name="search" id="search-bar" class="form-control" placeholder="Search for a car">
+        </div>
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-outline-dark btn-lg">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+    {% if searched %}
+        <h1 class="text-center">You searched for</h1>
+        {% for car in searched %}
+            <p class="text-center">{{ car.car_name }}</p>
+        {% endfor %}
+    {% else %}
+    <p class="text-center">You searched for.....</p>
+    {% endif %}
+
+{% endblock %}

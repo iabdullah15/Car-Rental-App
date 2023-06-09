@@ -1,39 +1,50 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, DeleteView
+from django.urls import reverse_lazy
 
-from .models import Booking, Car, Category
+from .models import Booking, Car, Category, CustomUser
+from .forms import CustomUserCreationForm
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-# class HomeListView(ListView):
+def car_search(request:HttpRequest):
 
-#     model = Car
-#     template_name = 'index.html'
+    if request.method == 'GET':
 
-#     def get_context_data(self, **kwargs):
+        searched = request.GET.get('search')
+        print(searched)
+        cars = Car.objects.filter(car_name__icontains = searched)
 
-#         context = super().get_context_data(**kwargs)
-#         context['economy'] = Car.objects.filter(category__category_name= 'Economy')
-#         context['sports'] = Car.objects.filter(category__category_name = 'Sports')
-#         context['luxury'] = Car.objects.filter(category__category_name = 'Luxury')
-#         context['suv'] = Car.objects.select_related('category').filter(category__category_name = 'SUV')
+        if not cars == None:
+            return render(request, 'searched-cars.html', {'searched':cars})
+        
+        else:
+            return redirect(reverse_lazy('home'))
 
-#         print(context)
-#         return context
+
+
+class Register(CreateView):
+    
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('login_view')
+    template_name = 'accounts/register.html'
+
+
 
 class Home(View):
 
+    def get(self, request:HttpRequest):
 
-    def get(self, request):
-
-        economy = Car.objects.filter(category__category_name= 'Economy')[:4]
-        sports = Car.objects.filter(category__category_name = 'Sports')
-        luxury = Car.objects.filter(category__category_name = 'Luxury')
-        suv = Car.objects.select_related('category').filter(category__category_name = 'SUV')
+        economy = Car.objects.filter(category__category_name= 'Economy').order_by('?')[:4]
+        sports = Car.objects.filter(category__category_name = 'Sports').order_by('?')[:4]
+        luxury = Car.objects.filter(category__category_name = 'Luxury')[:4]
+        suv = Car.objects.select_related('category').filter(category__category_name = 'SUV')[:4]
 
         context = {
             'economy': economy, 
@@ -44,16 +55,21 @@ class Home(View):
 
         return render(request, 'index.html', context)
     
+    
 
-class CarListView(ListView):
+class CarListView(LoginRequiredMixin, ListView):
 
     model = Car
     template_name = 'cars.html'
     context_object_name = 'cars'
 
+    def get_queryset(self) -> QuerySet[Any]:
+        return Car.objects.all().order_by('?')
 
-class EconomyListView(ListView):
 
+class EconomyListView(LoginRequiredMixin, ListView):
+
+    # paginate_by = 2
     model = Car
     template_name = 'economy-cars.html'
     context_object_name = 'economy'
@@ -63,7 +79,7 @@ class EconomyListView(ListView):
         return Car.objects.filter(category__category_name = 'Economy')
 
 
-class SportsListView(ListView):
+class SportsListView(LoginRequiredMixin, ListView):
 
     model = Car
     template_name = 'sports-cars.html'
@@ -73,7 +89,7 @@ class SportsListView(ListView):
         return Car.objects.filter(category__category_name = 'Sports')
     
 
-class SUVListView(ListView):
+class SUVListView(LoginRequiredMixin, ListView):
 
     model = Car
     template_name = 'suv-cars.html'
@@ -83,7 +99,7 @@ class SUVListView(ListView):
         return Car.objects.filter(category__category_name = 'SUV')
     
 
-class LuxuryListView(ListView):
+class LuxuryListView(LoginRequiredMixin, ListView):
 
     model = Car
     template_name = 'luxury-cars.html'

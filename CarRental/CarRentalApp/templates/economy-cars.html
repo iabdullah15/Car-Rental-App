@@ -14,15 +14,20 @@
 
 <div class="container-fluid">
     <h2 class="text-center"><em> Economy Cars </em></h2>
-  {% if economy %}
 
   <div class="row justify-content-center">
+    {% if economy %}
+
     {% for car in economy %}
 
     <div
       class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pt-5 car-col d-flex justify-content-center">
       <div class="card car-card" style="width: 18rem">
-        <img src="img/Toyota Corolla.jpg" class="card-img-top" alt="..." />
+        {% if car.car_image %}
+        <img src=" {{ car.car_image.url }} " class="card-img-top" />
+      {% else %} 
+        <img src="" alt="car_image"> 
+      {% endif %}
         <div class="card-body">
           <h5 class="card-title">{{ car.car_name }}</h5>
           <p class="card-text price-text" style="text-align: right">
@@ -45,5 +50,28 @@
 
   {% endif %}
 </div>
+
+
+{% comment %}
+<div class="pagination">
+  <span class="step-links">
+      {% if page_obj.has_previous %}
+          <a style="color:black" href="?page=1">&laquo; first</a>
+          <a style="color:black" href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+
+      {% if page_obj.has_next %}
+          <a style="color:black" href="?page={{ page_obj.next_page_number }}">next</a>
+          <a style="color:black" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+
+{% endcomment %}
+
 
 {% endblock %}

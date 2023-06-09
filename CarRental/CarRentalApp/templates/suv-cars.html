@@ -22,7 +22,11 @@
     <div
       class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pt-5 car-col d-flex justify-content-center">
       <div class="card car-card" style="width: 18rem">
-        <img src="img/Toyota Corolla.jpg" class="card-img-top" alt="..." />
+        {% if car.car_image %}
+        <img src=" {{ car.car_image.url }} " class="card-img-top" />
+        {% else %} 
+          <img src="" alt="car_image"> 
+        {% endif %}
         <div class="card-body">
           <h5 class="card-title">{{ car.car_name }}</h5>
           <p class="card-text price-text" style="text-align: right">
