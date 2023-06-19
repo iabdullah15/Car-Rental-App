@@ -1,6 +1,7 @@
 from typing import Any
+from django.db import models
 from django.db.models.query import QuerySet
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, DeleteView
@@ -12,6 +13,14 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+
+# def economy_detail(request:HttpRequest, id:int):
+
+#     car_objects = Car.objects.filter(category__category_name = 'Economy')
+#     car = get_object_or_404(car_objects, pk = id)
+
+#     return render(request, 'economy-detail.html', {'car':car})
+
 
 def car_search(request:HttpRequest):
 
@@ -43,8 +52,8 @@ class Home(View):
 
         economy = Car.objects.filter(category__category_name= 'Economy').order_by('?')[:4]
         sports = Car.objects.filter(category__category_name = 'Sports').order_by('?')[:4]
-        luxury = Car.objects.filter(category__category_name = 'Luxury')[:4]
-        suv = Car.objects.select_related('category').filter(category__category_name = 'SUV')[:4]
+        luxury = Car.objects.filter(category__category_name = 'Luxury').order_by('?')[:4]
+        suv = Car.objects.select_related('category').filter(category__category_name = 'SUV').order_by('?')[:4]
 
         context = {
             'economy': economy, 
@@ -107,4 +116,15 @@ class LuxuryListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         return Car.objects.filter(category__category_name = 'Luxury')
-    
+
+
+class EconomyDetailView(LoginRequiredMixin, DetailView):
+
+    model = Car
+    template_name = 'economy-detail.html'
+    pk_url_kwarg = 'car_id'     #Name of the url parameter defined in urls.py
+
+    def get_object(self, queryset=None):
+        id = self.kwargs.get('car_id')
+        car = get_object_or_404(Car, id=id, category__category_name="Economy")
+        return car

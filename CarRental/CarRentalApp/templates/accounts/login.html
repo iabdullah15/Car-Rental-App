@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 
@@ -13,6 +14,11 @@
         p.text-center > a {
             color: black;
         }
+
+
+		.center {
+			padding: 0rem 10rem;
+		}
     </style>
 
 {% endblock %}
@@ -27,18 +33,12 @@
 
 
   <div class="center">
-	  <form method="post" class="card">
+	  <form method="post">
 	  	{% csrf_token %}
 	    <h2 class="text-center">Log in to your account</h2>
-		{% for field in form %}
-	    		{{ field.label_tag }} 
-	        	{{ field }}
-	        	{% if field.errors %}
-	        		<p>{{ field.errors }}</p> 
-	        	{% endif %}
-		{% endfor %}
+		{{ form |crispy }}
 		
-		<input type="submit" value="Login" class="btn btn-primary full-width">
+		<input type="submit" value="Login" class="btn btn-outline-dark">
 		<hr>
 		<p class="text-center">Forgot your password <a href="#">Reset Password</a></p>
 		<p class="text-center">Don't have a account? <a href="{% url 'register' %}">Join Now</a></p>

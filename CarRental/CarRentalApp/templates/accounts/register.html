@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 
@@ -11,12 +12,17 @@
 
     <style>
         p.text-center > a {
-            color: black;
+            color: white;
         }
 
         a {
-            color: black;
+            color: white;
         }
+		
+		.center {
+			padding: 0rem 10rem;
+			margin-bottom: 5rem;
+		}
     </style>
 
 {% endblock %}
@@ -30,30 +36,13 @@
 {% else %}
 
 <div class="center">
-	<form method="post" novalidate class="card">
-	 	{%csrf_token %}
+	<form method="post" novalidate>
+	 	{% csrf_token %}
 	 	
 	 	<h2>Register</h2>
-		{% for field in form %}
-			{% if field.name == 'completed' %}
-				<p>
-					{{ field.label_tag }}
-					{{ field }}
-				</p>
-				{% if field.errors %}
-	        		<p class="error">{{ field.errors|striptags  }}</p> 
-	        	{% endif %}
-			{% else %}
-	    		{{ field.label_tag }} 
-	        	{{ field }}
-	        	{% if field.errors %}
-	        		<p class="error">{{ field.errors|striptags  }}</p> 
-	        	{% endif %}
-	        {% endif %}
-		{% endfor %}
-		
+		{{ form|crispy }}
 		<div class="form-buttons">
-			<input type="submit" value="Save" class="btn btn-primary"/>
+			<input type="submit" value="Register" class="btn btn-primary"/>
 			<a href="{% url 'home' %}" class="btn btn-outline">Cancel</a>
 		</div>
 	</form>

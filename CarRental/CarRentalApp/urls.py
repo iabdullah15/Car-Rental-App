@@ -15,4 +15,6 @@ urlpatterns = [
     path('register/', views.Register.as_view(), name='register'),
     path('cars/search', views.car_search, name='car_search'),
 
+    path('cars/economy/<int:car_id>', views.EconomyDetailView.as_view(), name='economy_detail')
+
 ]
