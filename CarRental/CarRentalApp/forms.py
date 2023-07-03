@@ -1,4 +1,4 @@
-from .models import Booking, CustomUser
+from .models import Booking, CustomUser, Contact
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.forms.widgets import DateInput
@@ -8,6 +8,14 @@ class BookingForm(forms.ModelForm):
     class Meta:
 
         model = Booking
+        fields = '__all__'
+
+
+class ContactForm(forms.ModelForm):
+
+    class Meta:
+        
+        model = Contact
         fields = '__all__'
 
 

@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from django.utils.timezone import now
-from django.contrib.auth.models import AbstractUser, UserManager, BaseUserManager
+from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -65,3 +66,19 @@ class Booking(models.Model):
     car = models.ForeignKey(Car, on_delete=models.RESTRICT)
     booking_date = models.DateField()
     return_date = models.DateField()
+
+
+class Contact(models.Model):
+
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=11, 
+                             validators=[RegexValidator(
+                                 regex=r'^\d{11}$',
+                                 message="Contact number must be exactly 11 digits."
+                             )])
+    subject = models.CharField(max_length=50, default="")
+    message = models.TextField()
+
+    def __str__(self) -> str:
+        return self.subject

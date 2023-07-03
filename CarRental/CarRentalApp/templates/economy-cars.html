@@ -24,7 +24,9 @@
       class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pt-5 car-col d-flex justify-content-center">
       <div class="card car-card" style="width: 18rem">
         {% if car.car_image %}
-        <img src=" {{ car.car_image.url }} " class="card-img-top" />
+        <a href="{% url 'economy_detail' car.id %}">
+          <img src=" {{ car.car_image.url }} " class="card-img-top" />
+        </a>
       {% else %} 
         <img src="" alt="car_image"> 
       {% endif %}

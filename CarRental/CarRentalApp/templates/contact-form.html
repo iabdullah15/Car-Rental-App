@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Contact Us</title>
+
+{% endblock %}
+
+
+{% block styles %}
+{{block.super}}
+
+<style>
+    
+    .center {
+        padding: 10rem;
+        padding-top: 3rem;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center">Contact Us</h1>
+
+<div class="center">
+    <form method="post">
+        {% csrf_token %}
+
+      {{ form | crispy }}
+      
+      <input type="submit" value="Submut" class="btn btn-outline-dark">
+  </form>
+</div>
+
+
+{% endblock %}

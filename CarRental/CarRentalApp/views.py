@@ -6,20 +6,23 @@ from django.http import HttpResponse, HttpRequest
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, DeleteView
 from django.urls import reverse_lazy
-
-from .models import Booking, Car, Category, CustomUser
-from .forms import CustomUserCreationForm
+from django.contrib import messages
+from .models import Booking, Car, Category, CustomUser, Contact
+from .forms import CustomUserCreationForm, ContactForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-# def economy_detail(request:HttpRequest, id:int):
+def success(request:HttpRequest):
 
-#     car_objects = Car.objects.filter(category__category_name = 'Economy')
-#     car = get_object_or_404(car_objects, pk = id)
+    if request.method == 'GET':
+        messages.success(request, 'Form submitted succesfully.')
+        return render(request, 'success.html', {})
+    
+    else:
+        return redirect(reverse_lazy('home'))
 
-#     return render(request, 'economy-detail.html', {'car':car})
 
 
 def car_search(request:HttpRequest):
@@ -28,13 +31,36 @@ def car_search(request:HttpRequest):
 
         searched = request.GET.get('search')
         print(searched)
-        cars = Car.objects.filter(car_name__icontains = searched)
+        cars = None
 
-        if not cars == None:
-            return render(request, 'searched-cars.html', {'searched':cars})
-        
+        if searched:
+            cars = Car.objects.filter(car_name__icontains = searched)
         else:
-            return redirect(reverse_lazy('home'))
+            cars = None
+
+        return render(request, 'searched-cars.html', {'searched':cars})
+        
+
+class ContactView(CreateView):
+
+    # model = Contact
+    form_class = ContactForm
+    template_name = 'contact-form.html'
+    context_object_name = 'form'
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return super().get(request, *args, **kwargs)
+    
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Form submitted succesfully.')
+
+        return redirect(reverse_lazy('success_page'))
 
 
 
@@ -127,4 +153,16 @@ class EconomyDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         id = self.kwargs.get('car_id')
         car = get_object_or_404(Car, id=id, category__category_name="Economy")
+        return car
+    
+
+class LuxuryDetailView(LoginRequiredMixin, DetailView):
+
+    model = Car
+    template_name = 'luxury-detail.html'
+    pk_url_kwarg = 'car_id'     #Name of the url parameter defined in urls.py
+
+    def get_object(self, queryset=None):
+        id = self.kwargs.get('car_id')
+        car = get_object_or_404(Car, id=id, category__category_name="Luxury")
         return car

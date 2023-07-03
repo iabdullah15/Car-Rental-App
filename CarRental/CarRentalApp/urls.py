@@ -14,7 +14,10 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.Register.as_view(), name='register'),
     path('cars/search', views.car_search, name='car_search'),
+    path('contact/', views.ContactView.as_view(), name='contact_form'),
+    path('contact/success', views.success, name='success_page'),
 
-    path('cars/economy/<int:car_id>', views.EconomyDetailView.as_view(), name='economy_detail')
 
+    path('cars/economy/<int:car_id>', views.EconomyDetailView.as_view(), name='economy_detail'),
+    path('cars/luxury/<int:car_id>', views.LuxuryDetailView.as_view(), name='luxury_detail'),
 ]

@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
-from .models import Category, Car, Booking, CustomUser
+from .models import Category, Car, Booking, CustomUser, Contact
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -30,3 +30,4 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Car)
 admin.site.register(Category)
 admin.site.register(Booking)
+admin.site.register(Contact)

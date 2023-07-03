@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-09o63^re4$b7bd*^@*n*d5=a#nrrz_7bqdb*n4c^cthmc%i(nk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -62,6 +62,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'CarRental.urls'
+
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_TRUSTED_ORIGINS = ['https://9a47-205-164-154-154.ngrok-free.app']
+
 
 TEMPLATES = [
     {

@@ -9,8 +9,8 @@
 
 {% block styles %}
     {{block.super}}
-    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
 
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
 {% endblock %}
 
 
@@ -23,12 +23,17 @@
             <p>
                 <a class="link-dark" href="{% url 'home' %}">Home > </a>
                 <a class="link-dark" href="{% url 'cars' %}">Cars > </a>
-                <a class="link-dark" href="{% url 'economy_cars' %}">Economy</a>
+                <a class="link-dark" href="{% url 'luxury_cars' %}">Luxury</a>
             </p>
             
             
             <h4> {{car.car_name}} </h4>
+            {% if car.car_image %}
             <img src=" {{ car.car_image.url }} " class="img-fluid car-img" width="750"/>
+
+            {% else %}
+            <p>No image available</p>
+            {% endif %}
         </div>
         <div class="col-lg-6">
             <div class="book-col ps-5">

@@ -1,0 +1,24 @@
+.link-dark {
+    text-decoration: none;
+}
+
+#main {
+    padding: 5rem;
+}
+
+.car-image {
+    max-width: 60%;  
+    height: auto;  
+}
+
+h4 {
+    color: #1C75B2;
+}
+
+.containe-fluid {
+    padding:0;
+}
+
+.book-col {
+    padding-top: 5rem;
+}
